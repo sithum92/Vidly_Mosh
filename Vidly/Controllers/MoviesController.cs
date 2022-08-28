@@ -12,13 +12,23 @@ namespace Vidly.Controllers
     {
         // GET: Movies
 
+        private ApplicationDbContext _context;
 
-  
 
+        public MoviesController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+       ~ MoviesController()
+        {
+            _context.Dispose();
+        }
+        
 
         public ActionResult Index()
         {
-            var movies = GetMovies();
+            var movies = _context.Movies.ToList();
 
             if (movies == null)
                 return HttpNotFound();
@@ -28,18 +38,18 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int Id)
         {
-            var movie = GetMovies().SingleOrDefault(c => c.Id == Id);
+            var movie = _context.Movies.SingleOrDefault(c => c.Id == Id);
             return View(movie);
         }
 
-        private IEnumerable<Movie> GetMovies()
-        {
-            return new List<Movie>
-            { 
-            new Movie{Id = 1, Name = "Shrek"},
-            new Movie{ Id = 2, Name = "Wall-e"} 
-            };
-        }
+        //private IEnumerable<Movie> GetMovies()
+        //{
+        //    return new List<Movie>
+        //    { 
+        //    new Movie{Id = 1, Name = "Shrek"},
+        //    new Movie{ Id = 2, Name = "Wall-e"} 
+        //    };
+        //}
 
         #region Old
 
